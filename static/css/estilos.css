@@ -1,0 +1,145 @@
+/* =========================
+   ESTILO GENERAL
+========================= */
+
+body{
+font-family: "Segoe UI", Arial, sans-serif;
+margin:0;
+background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+url("../img/fondo-campo.jpg");
+background-size: cover;
+background-position: center;
+color:#333;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+background:#2e7d32;
+color:white;
+padding:25px;
+text-align:center;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+nav{
+margin-top:10px;
+}
+
+nav a{
+color:white;
+margin:0 15px;
+text-decoration:none;
+font-weight:500;
+}
+
+nav a:hover{
+text-decoration:underline;
+}
+
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+
+main{
+max-width:1100px;
+margin:auto;
+padding:40px 20px;
+}
+
+/* =========================
+   SECCIONES
+========================= */
+
+section{
+background:white;
+padding:30px;
+margin-bottom:40px;
+border-radius:12px;
+box-shadow:0 10px 20px rgba(0,0,0,0.15);
+}
+
+h2{
+margin-top:0;
+color:#2e7d32;
+}
+
+/* =========================
+   FORMULARIO
+========================= */
+
+form{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+margin-top:20px;
+}
+
+form label{
+font-weight:600;
+}
+
+form input,
+form select{
+width:100%;
+padding:12px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:15px;
+}
+
+form button{
+grid-column:1 / 3;
+padding:14px;
+font-size:16px;
+background:#388e3c;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+transition:0.3s;
+}
+
+form button:hover{
+background:#1b5e20;
+}
+
+/* =========================
+   TABLA DE RESULTADOS
+========================= */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:30px;
+font-size:15px;
+}
+
+th,td{
+padding:14px;
+text-align:center;
+border-bottom:1px solid #ddd;
+}
+
+th{
+background:#4caf50;
+color:white;
+}
+
+tr:hover{
+background:#f1f1f1;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+background:#1b5e20;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}

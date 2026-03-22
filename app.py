@@ -1,215 +1,119 @@
-# Importamos las herramientas necesarias de Flask
-# Flask: crea la aplicación web
-# request: permite leer los datos enviados desde el formulario
-# render_template_string: permite renderizar HTML directamente desde el código
-from flask import Flask, request, render_template_string
+from flask import Flask, render_template, request, redirect, flash
 
-# Creamos la aplicación
+# creo la app Flask
 app = Flask(__name__)
+app.secret_key = "calculadora_ganadera_secret"  # para mensajes flash (errores/exitos)
 
+# historial temporal para guardar los animales agregados
+# ojo: se pierde al cerrar la app, sirve mientras la app corre
+historial = []
 
 # ==============================
-# FUNCIONES DE CÁLCULO
+# FUNCIÓN PARA CALCULAR PRODUCCIÓN E INGRESOS
 # ==============================
+def calcular(animal, cantidad, produccion, precio):
+    """
+    Calcula la producción diaria, mensual y los ingresos según el animal.
+    """
+    produccion_dia = 0
+    produccion_mes = 0
+    ingresos_dia = 0
+    ingresos_mes = 0
 
-# Esta función recibe todos los datos necesarios
-# y devuelve los resultados en un diccionario.
-def calcular_resultados(vacas, litros_por_vaca, precio_litro, gastos):
+    if animal == "Vacas":
+        produccion_dia = cantidad * produccion
+        produccion_mes = produccion_dia * 30
+        ingresos_dia = produccion_dia * precio
+        ingresos_mes = produccion_mes * precio
 
-    # Producción total de leche
-    produccion = vacas * litros_por_vaca
+    elif animal == "Gallinas":
+    # para gallinas la producción ya es TOTAL del día, no multiplicar por cantidad
+     produccion_dia = produccion
+     produccion_mes = produccion_dia * 30
+     ingresos_dia = produccion_dia * precio  # solo multiplicar por precio
+     ingresos_mes = produccion_mes * precio
 
-    # Dinero obtenido por vender la leche
-    ingresos = produccion * precio_litro
-
-    # Ganancia final después de restar gastos
-    ganancia = ingresos - gastos
-
+    elif animal == "Cerdos":
+    # la producción mensual ya es TOTAL, no multiplicar por cantidad
+     produccion_mes = produccion
+     ingresos_mes = produccion_mes * precio
+     produccion_dia = 0  # no hay producción diaria
+     ingresos_dia = 0
     return {
-        "produccion": produccion,
-        "ingresos": ingresos,
-        "ganancia": ganancia
+        "animal": animal,
+        "cantidad": cantidad,
+        "produccion_dia": produccion_dia,
+        "produccion_mes": produccion_mes,
+        "precio": precio,
+        "ingresos_dia": ingresos_dia,
+        "ingresos_mes": ingresos_mes
     }
-
-
-# ==============================
-# HTML DE LA APLICACIÓN
-# ==============================
-
-# Guardamos todo el HTML en una variable para mantener
-# el proyecto en un solo archivo como pide la tarea.
-HTML_TEMPLATE = """
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<title>Calculadora Ganadera</title>
-
-<style>
-
-body{
-font-family: Arial;
-background:#f4f6f7;
-padding:40px;
-}
-
-.container{
-max-width:450px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:8px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-h1{
-text-align:center;
-}
-
-form{
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-input{
-padding:10px;
-font-size:16px;
-}
-
-button{
-padding:12px;
-background:#2e7d32;
-color:white;
-border:none;
-cursor:pointer;
-}
-
-button:hover{
-background:#1b5e20;
-}
-
-.resultado{
-margin-top:20px;
-background:#eef7ee;
-padding:15px;
-border-radius:5px;
-}
-
-.error{
-color:red;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="container">
-
-<h1>🐄 Calculadora Ganadera</h1>
-
-<form method="POST">
-
-<label>Número de vacas</label>
-<input type="number" name="vacas" required>
-
-<label>Litros por vaca</label>
-<input type="number" step="0.1" name="litros" required>
-
-<label>Precio por litro</label>
-<input type="number" step="0.1" name="precio" required>
-
-<label>Gastos diarios</label>
-<input type="number" step="0.1" name="gastos" required>
-
-<button type="submit">Calcular</button>
-
-</form>
-
-{% if resultado %}
-
-<div class="resultado">
-
-{% if resultado.error %}
-<p class="error">{{ resultado.error }}</p>
-{% else %}
-
-<h3>Resultados</h3>
-
-<p><strong>Producción total:</strong> {{ resultado.produccion }} litros</p>
-<p><strong>Ingresos:</strong> ${{ resultado.ingresos }}</p>
-<p><strong>Ganancia:</strong> ${{ resultado.ganancia }}</p>
-
-{% endif %}
-
-</div>
-
-{% endif %}
-
-</div>
-
-</body>
-</html>
-
-"""
-
-
-# ==============================
-# FUNCIÓN PARA LEER Y VALIDAR DATOS
-# ==============================
-
-# Esta función intenta convertir los datos del formulario
-# a números. Si algo falla, lanza un error.
-def obtener_datos_formulario():
-
-    vacas = int(request.form["vacas"])
-    litros = float(request.form["litros"])
-    precio = float(request.form["precio"])
-    gastos = float(request.form["gastos"])
-
-    return vacas, litros, precio, gastos
-
 
 # ==============================
 # RUTA PRINCIPAL
 # ==============================
-
-# Esta ruta controla la página principal de la aplicación.
 @app.route("/", methods=["GET", "POST"])
 def index():
-
-    resultado = None
-
-    # Si el usuario envía el formulario
+    """
+    Maneja:
+    - el formulario para agregar animales
+    - filtro para ver solo un tipo de animal
+    """
     if request.method == "POST":
-
         try:
+            animal = request.form.get("animal")
+            cantidad = int(request.form.get("cantidad", 0))
+            produccion = float(request.form.get("produccion", 0))
+            precio = float(request.form.get("precio", 0))
 
-            # Obtenemos los datos ingresados
-            vacas, litros, precio, gastos = obtener_datos_formulario()
-
-            # Calculamos los resultados
-            resultado = calcular_resultados(vacas, litros, precio, gastos)
+            # VALIDACIONES básicas
+            if animal not in ["Vacas", "Gallinas", "Cerdos"]:
+                flash("Tipo de animal no válido.", "error")
+            elif cantidad <= 0:
+                flash("La cantidad debe ser mayor a 0.", "error")
+            elif produccion < 0:
+                flash("La producción no puede ser negativa.", "error")
+            elif precio < 0:
+                flash("El precio no puede ser negativo.", "error")
+            else:
+                resultado = calcular(animal, cantidad, produccion, precio)
+                historial.append(resultado)
 
         except ValueError:
+            flash("Por favor ingresa valores numéricos válidos.", "error")
 
-            # Si los datos no son números válidos
-            resultado = {
-                "error": "Por favor ingrese valores numéricos válidos."
-            }
+    # FILTRO de resultados
+    filtro = request.args.get("filtro", "Todos")
+    if filtro == "Todos":
+        resultados = historial
+    else:
+        resultados = [r for r in historial if r["animal"] == filtro]
 
-    # Mostramos la página
-    return render_template_string(HTML_TEMPLATE, resultado=resultado)
-
+    return render_template("index.html", resultados=resultados, filtro=filtro)
 
 # ==============================
-# EJECUCIÓN DE LA APLICACIÓN
+# RUTA DE CONTACTO
 # ==============================
+@app.route("/contacto", methods=["POST"])
+def contacto():
+    """
+    Maneja el formulario de contacto y guarda los mensajes en mensajes.txt
+    """
+    nombre = request.form.get("nombre", "")
+    correo = request.form.get("correo", "")
+    mensaje = request.form.get("mensaje", "")
 
-# Esto permite ejecutar la aplicación con:
-# python app.py
+    if nombre and correo and mensaje:
+        with open("mensajes.txt", "a", encoding="utf-8") as archivo:
+            archivo.write(f"{nombre},{correo},{mensaje}\n")
+        flash("Mensaje enviado correctamente.", "success")
+    else:
+        flash("Todos los campos son obligatorios.", "error")
+
+    return redirect("/")
+
+# ==============================
+# EJECUCIÓN
+# ==============================
 if __name__ == "__main__":
     app.run(debug=True)

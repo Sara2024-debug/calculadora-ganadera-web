@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora Ganadera</title>
+    <!-- link al CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>🐄 Calculadora Ganadera</h1>
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#productos">Productos</a>
+        <a href="#calculadora">Calculadora</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+</header>
+
+<main>
+    <!-- sección de información -->
+    <section id="inicio">
+        <h2>Información</h2>
+        <p>Calcula producción e ingresos de tus animales según tipo, cantidad y precio.</p>
+    </section>
+
+    <!-- sección de productos -->
+    <section id="productos">
+        <h2>Productos Agropecuarios</h2>
+        <ul>
+            <li>Leche</li>
+            <li>Huevos</li>
+            <li>Carne</li>
+        </ul>
+    </section>
+
+    <!-- sección de calculadora -->
+    <section id="calculadora">
+        <h2>Calculadora de Producción</h2>
+
+        <!-- mensajes de error o éxito -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class="flash-messages">
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <!-- formulario para agregar animal -->
+        <form method="POST">
+            <label for="animal">Tipo de animal</label>
+            <select name="animal" id="animal" required>
+                <option value="Vacas">Vacas</option>
+                <option value="Gallinas">Gallinas</option>
+                <option value="Cerdos">Cerdos</option>
+            </select>
+
+            <label for="cantidad">Cantidad de animales</label>
+            <input type="number" name="cantidad" id="cantidad" min="1" required>
+
+            <label for="produccion" id="labelProduccion">Producción</label>
+            <input type="number" step="0.1" name="produccion" id="produccion" min="0" required>
+
+            <label for="precio">Precio por unidad</label>
+            <input type="number" step="0.1" name="precio" id="precio" min="0" required>
+
+            <button type="submit">Agregar</button>
+        </form>
+
+        <!-- filtro -->
+        <form method="GET" style="margin-top:20px;">
+            <label for="filtro">Filtrar por animal:</label>
+            <select name="filtro" id="filtro" onchange="this.form.submit()">
+                <option value="Todos" {% if filtro=='Todos' %}selected{% endif %}>Todos</option>
+                <option value="Vacas" {% if filtro=='Vacas' %}selected{% endif %}>Vacas</option>
+                <option value="Gallinas" {% if filtro=='Gallinas' %}selected{% endif %}>Gallinas</option>
+                <option value="Cerdos" {% if filtro=='Cerdos' %}selected{% endif %}>Cerdos</option>
+            </select>
+        </form>
+
+        <!-- tablas de resultados -->
+        {% for r in resultados %}
+        <table>
+            <tr>
+                <th>Animal</th>
+                <th>Cantidad</th>
+                <th>Producción diaria</th>
+                <th>Producción mensual</th>
+                <th>Precio</th>
+                <th>Ingresos diarios</th>
+                <th>Ingresos mensuales</th>
+            </tr>
+            <tr>
+                <td>{{ r.animal }}</td>
+                <td>{{ r.cantidad }}</td>
+                <td>{{ r.produccion_dia }}</td>
+                <td>{{ r.produccion_mes }}</td>
+                <td>{{ r.precio }}</td>
+                <td>{{ r.ingresos_dia }}</td>
+                <td>{{ r.ingresos_mes }}</td>
+            </tr>
+        </table>
+        {% endfor %}
+    </section>
+
+    <!-- sección contacto -->
+    <section id="contacto">
+        <h2>Contacto</h2>
+        <form method="POST" action="/contacto">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre" required>
+
+            <label for="correo">Correo</label>
+            <input type="email" name="correo" id="correo" required>
+
+            <label for="mensaje">Mensaje</label>
+            <textarea name="mensaje" id="mensaje" required></textarea>
+
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>Proyecto Calculadora Ganadera - Sara Nikol Salgado Villada</p>
+</footer>
+
+<!-- JS externo -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
