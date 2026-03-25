@@ -28,7 +28,7 @@ function actualizarLabel() {
     else if (animal.value === "Gallinas") {
 
         // cambia el texto del label
-        label.textContent = "Huevos totales por por día";
+        label.textContent = "Huevos totales por día";
 
         // cambia el ejemplo
         produccionInput.placeholder = "Ej: 10";
@@ -76,25 +76,6 @@ function validarProduccion() {
         produccionInput.value = "";
     }
 }
-
-
-
-// actualizar al cargar la página
-// esto hace que el label ya aparezca correcto al abrir la página
-actualizarLabel();
-
-
-
-// actualizar cada vez que cambie el animal
-// cuando el usuario cambie el select se ejecuta la función
-animal.addEventListener("change", actualizarLabel);
-
-
-
-// validar cada vez que se escribe en el input
-// cada vez que el usuario escribe algo se revisa si es válido
-produccionInput.addEventListener("input", validarProduccion);
-
 
 
 
@@ -235,8 +216,10 @@ function agregarAnimal() {
     // guarda el resultado en el historial
     historial.push(resultado);
 
-    // muestra los resultados en la tabla
-    mostrarResultados();
+    // muestra los resultados en la tabla usando el filtro actual
+    const filtroActual = document.getElementById("filtro").value;
+
+    mostrarResultados(filtroActual);
 }
 
 
@@ -286,3 +269,25 @@ function mostrarResultados(filtro = "Todos") {
     });
 
 }
+
+
+
+// actualizar cada vez que cambie el animal
+// cuando el usuario cambie el select se ejecuta la función
+animal.addEventListener("change", actualizarLabel);
+
+
+
+// validar cada vez que se escribe en el input
+// cada vez que el usuario escribe algo se revisa si es válido
+produccionInput.addEventListener("input", validarProduccion);
+
+
+
+// actualizar al cargar la página
+// esto hace que el label ya aparezca correcto al abrir la página
+document.addEventListener("DOMContentLoaded", function () {
+
+    actualizarLabel();
+
+});
