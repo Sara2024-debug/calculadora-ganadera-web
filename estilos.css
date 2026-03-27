@@ -169,5 +169,22 @@ footer{
     font-size:13px;
     display: block;
     overflow-x: auto; /* scroll horizontal si es muy ancha */
-  }
+ 
+ }
+}
+
+.btn-whatsapp{
+background:#25D366;
+color:white;
+border:none;
+padding:14px 24px;
+font-size:16px;
+border-radius:25px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.btn-whatsapp:hover{
+background:#1ebe5d;
+transform:scale(1.05);
 }
