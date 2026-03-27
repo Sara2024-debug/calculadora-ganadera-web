@@ -82,6 +82,39 @@
 
 
 <!-- ============================= -->
+<!-- SECCIÓN USUARIO -->
+<!-- ============================= -->
+
+<section id="usuario">
+
+<h2>Ingreso de Usuario</h2>
+
+<!-- formulario simple para capturar el nombre del usuario -->
+<form onsubmit="event.preventDefault(); guardarUsuario();">
+
+<label for="nombreUsuario">Nombre del usuario</label>
+
+<input
+type="text"
+id="nombreUsuario"
+placeholder="Ej: Nikol"
+required
+>
+
+<button type="submit">
+Ingresar
+</button>
+
+</form>
+
+<!-- aquí se mostrará el usuario que está usando el sistema -->
+<p id="usuarioActivo"></p>
+
+</section>
+
+
+
+<!-- ============================= -->
 <!-- SECCIÓN CALCULADORA -->
 <!-- ============================= -->
 
@@ -154,13 +187,10 @@ y ejecuta la función agregarAnimal() del JS -->
 
 
 
-    <!-- botón para agregar el animal -->
-
-    <button type="submit">
-
-        Calcular
-
-    </button>
+<!-- botón para agregar el animal -->
+<button type="submit" id="btnCalcular">
+    Calcular
+</button>
 
 </form>
 
@@ -197,6 +227,9 @@ y ejecuta la función agregarAnimal() del JS -->
 
 <tr>
 
+<!-- nueva columna para mostrar el usuario -->
+<th>Usuario</th>
+
 <th>Animal</th>
 <th>Cantidad</th>
 <th>Producción diaria</th>
@@ -216,6 +249,28 @@ y ejecuta la función agregarAnimal() del JS -->
 </tbody>
 
 </table>
+
+
+
+<!-- ============================= -->
+<!-- BOTÓN DE WHATSAPP -->
+<!-- ============================= -->
+
+<!-- este botón abre directamente el chat al número indicado -->
+
+<div style="margin-top:20px; text-align:center;">
+
+<a href="https://wa.me/573113249515" target="_blank">
+
+<button>
+
+Contactar por WhatsApp
+
+</button>
+
+</a>
+
+</div>
 
 </section>
 

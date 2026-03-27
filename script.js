@@ -11,6 +11,42 @@ const produccionInput = document.getElementById("produccion");
 
 
 
+// ==============================
+// USUARIO ACTIVO DEL SISTEMA
+// ==============================
+
+// variable donde se guardará el usuario que está usando el sistema
+// se usa para registrar quién hace cada cálculo
+let usuarioActual = "";
+
+
+
+// ==============================
+// FUNCIÓN PARA GUARDAR EL USUARIO
+// ==============================
+
+function guardarUsuario(){
+
+    // obtiene el nombre que escribió el usuario
+    const nombre = document.getElementById("nombreUsuario").value.trim();
+
+    // validación básica para evitar nombre vacío
+    if(nombre === ""){
+        alert("Debe ingresar un nombre de usuario.");
+        return;
+    }
+
+    // guarda el usuario actual
+    usuarioActual = nombre;
+
+    // muestra el usuario en pantalla
+    document.getElementById("usuarioActivo").textContent =
+    "Usuario activo: " + usuarioActual;
+
+}
+
+
+
 // Función para actualizar el label y el placeholder según el animal seleccionado
 function actualizarLabel() {
 
@@ -171,6 +207,16 @@ function calcular(animal, cantidad, produccion, precio) {
 
 function agregarAnimal() {
 
+    // ==============================
+    // VALIDACIÓN DE USUARIO
+    // ==============================
+
+    // evita que se puedan hacer cálculos si no se ingresó un usuario
+    if(usuarioActual === ""){
+        alert("Primero debe ingresar un usuario.");
+        return;
+    }
+
     // obtiene el tipo de animal seleccionado
     const tipoAnimal = document.getElementById("animal").value;
 
@@ -213,6 +259,12 @@ function agregarAnimal() {
     // llama la función calcular para obtener los resultados
     const resultado = calcular(tipoAnimal, cantidad, produccion, precio);
 
+    // ==============================
+    // SE AGREGA EL USUARIO AL RESULTADO
+    // ==============================
+
+    resultado.usuario = usuarioActual;
+
     // guarda el resultado en el historial
     historial.push(resultado);
 
@@ -253,6 +305,7 @@ function mostrarResultados(filtro = "Todos") {
         // crea una fila de la tabla con los datos
         const fila = `
         <tr>
+        <td>${r.usuario}</td>
         <td>${r.animal}</td>
         <td>${r.cantidad}</td>
         <td>${r.produccion_dia}</td>
