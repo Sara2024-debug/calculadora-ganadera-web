@@ -10,3 +10,8 @@ El de dir porque quería ver los archivos del proyecto
 Los atajos que aplique fueron Ctrl +shift+ f para buscar funciones en los archivos, comentar y descomentar una línea de código Ctrl + / , el Ctrl+ñ  abrir la terminal y  Ctrl+ f para buscar dentro del archivo que me encuentro.
 Se puede correr por medio de la terminal integrada con start index.html o por medio de start debuggin. 
 Lo que mejor aprendí fue a conectar los archivos porque me compliqué la vida solo porque el archivo js no estaba bien conectado, también a usar ciclos y a usar funciones para optimizar el código
+
+¿De qué manera el diseño de una sección “Glosario ganadero” dentro de una calculadora ganadera puede mejorar la comprensión de conceptos técnicos, apoyar el aprendizaje del usuario y aportar mayor valor informativo al proyecto?
+Es bueno incluir un glosario porque así las personas que no tengas dominio o mucho conocimiento sobre el tema, pueden aprender y utilizar el sistema para sus necesidades.Además, esta parte también ayuda al aprendizaje del usuario porque mientras utiliza la calculadora también puede aprender sobre conceptos importantes de la ganadería, como producción, pastoreo, sanidad animal o reproducción y asi no solo sirve para hacer cálculos sino también para adquirir conocimientos.
+
+Y que la página tenga un glosario es una gran ventaja porquela hace más completa y le da una mejor experiencia al usuario. 

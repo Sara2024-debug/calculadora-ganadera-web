@@ -9,16 +9,15 @@
     <title>Calculadora Rural</title>
 
     <!-- conexión con el archivo CSS -->
-    <!-- antes usaba Flask url_for, ahora es una ruta normal -->
     <link rel="stylesheet" href="estilos.css">
 
 </head>
 
 <body>
 
-<!-- ============================= -->
-<!-- ENCABEZADO DE LA PÁGINA -->
-<!-- ============================= -->
+<!-- =============================
+     ENCABEZADO DE LA PÁGINA
+============================= -->
 
 <header>
 
@@ -27,24 +26,23 @@
 
     <!-- menú de navegación -->
     <nav>
-
         <!-- enlaces internos de la página -->
         <a href="#inicio">Inicio</a>
         <a href="#productos">Productos</a>
         <a href="#calculadora">Calculadora</a>
         <a href="#contacto">Contacto</a>
 
+        <!-- NUEVO: botón que abre la sección Glosario en otra pestaña -->
+        <a href="#" onclick="abrirGlosario()">Glosario</a>
     </nav>
 
 </header>
 
-
-
 <main>
 
-<!-- ============================= -->
-<!-- SECCIÓN DE INFORMACIÓN -->
-<!-- ============================= -->
+<!-- =============================
+     SECCIÓN DE INFORMACIÓN
+============================= -->
 
 <section id="inicio">
 
@@ -58,11 +56,9 @@
 
 </section>
 
-
-
-<!-- ============================= -->
-<!-- SECCIÓN DE PRODUCTOS -->
-<!-- ============================= -->
+<!-- =============================
+     SECCIÓN DE PRODUCTOS
+============================= -->
 
 <section id="productos">
 
@@ -70,20 +66,16 @@
 
     <!-- lista de productos -->
     <ul>
-
         <li>Leche</li>
         <li>Huevos</li>
         <li>Carne</li>
-
     </ul>
 
 </section>
 
-
-
-<!-- ============================= -->
-<!-- SECCIÓN USUARIO -->
-<!-- ============================= -->
+<!-- =============================
+     SECCIÓN USUARIO
+============================= -->
 
 <section id="usuario">
 
@@ -112,43 +104,27 @@ Ingresar
 
 </section>
 
-
-
-<!-- ============================= -->
-<!-- SECCIÓN CALCULADORA -->
-<!-- ============================= -->
+<!-- =============================
+     SECCIÓN CALCULADORA
+============================= -->
 
 <section id="calculadora">
 
 <h2>Calculadora de Producción</h2>
 
-
-
-<!-- ============================= -->
-<!-- FORMULARIO DE CÁLCULO -->
-<!-- ============================= -->
-
-<!-- onsubmit evita que la página se recargue
-y ejecuta la función agregarAnimal() del JS -->
-
+<!-- formulario para capturar tipo de animal, cantidad, producción y precio -->
 <form onsubmit="event.preventDefault(); agregarAnimal();">
 
     <!-- selección del tipo de animal -->
     <label for="animal">Tipo de animal</label>
-
     <select id="animal" required>
-
         <option value="Vacas">Vacas</option>
         <option value="Gallinas">Gallinas</option>
         <option value="Cerdos">Cerdos</option>
-
     </select>
-
-
 
     <!-- cantidad de animales -->
     <label for="cantidad">Cantidad de animales</label>
-
     <input
         type="number"
         id="cantidad"
@@ -156,13 +132,8 @@ y ejecuta la función agregarAnimal() del JS -->
         required
     >
 
-
-
     <!-- producción del animal -->
-    <!-- el label cambia con JS según el animal -->
-
     <label for="produccion" id="labelProduccion">Producción</label>
-
     <input
         type="number"
         id="produccion"
@@ -171,12 +142,8 @@ y ejecuta la función agregarAnimal() del JS -->
         required
     >
 
-
-
     <!-- precio del producto -->
-
     <label for="precio">Precio por unidad</label>
-
     <input
         type="number"
         id="precio"
@@ -185,51 +152,35 @@ y ejecuta la función agregarAnimal() del JS -->
         required
     >
 
-
-
-<!-- botón para agregar el animal -->
-<button type="submit" id="btnCalcular">
-    Calcular
-</button>
+    <!-- botón para agregar el animal -->
+    <button type="submit" id="btnCalcular">
+        Calcular
+    </button>
 
 </form>
 
-
-
-<!-- ============================= -->
-<!-- FILTRO DE RESULTADOS -->
-<!-- ============================= -->
+<!-- =============================
+     FILTRO DE RESULTADOS
+============================= -->
 
 <div style="margin-top:20px;">
-
 <label for="filtro">Filtrar por animal:</label>
-
 <select id="filtro" onchange="mostrarResultados(this.value)">
-
 <option value="Todos">Todos</option>
 <option value="Vacas">Vacas</option>
 <option value="Gallinas">Gallinas</option>
 <option value="Cerdos">Cerdos</option>
-
 </select>
-
 </div>
 
-
-
-<!-- ============================= -->
-<!-- TABLA DE RESULTADOS -->
-<!-- ============================= -->
+<!-- =============================
+     TABLA DE RESULTADOS
+============================= -->
 
 <table>
-
 <thead>
-
 <tr>
-
-<!-- nueva columna para mostrar el usuario -->
 <th>Usuario</th>
-
 <th>Animal</th>
 <th>Cantidad</th>
 <th>Producción diaria</th>
@@ -237,57 +188,36 @@ y ejecuta la función agregarAnimal() del JS -->
 <th>Precio</th>
 <th>Ingresos diarios</th>
 <th>Ingresos mensuales</th>
-
 </tr>
-
 </thead>
 
 <!-- aquí JavaScript insertará los resultados -->
-
-<tbody id="tablaResultados">
-
-</tbody>
-
+<tbody id="tablaResultados"></tbody>
 </table>
 
-
-
-<!-- ============================= -->
-<!-- BOTÓN DE WHATSAPP -->
-<!-- ============================= -->
-
-<!-- este botón abre directamente el chat al número indicado -->
+<!-- =============================
+     BOTÓN DE WHATSAPP
+============================= -->
 
 <div style="margin-top:20px; text-align:center;">
-
 <a href="https://wa.me/573113249515" target="_blank">
-
 <button class="btn-whatsapp">
-
 Contactar por WhatsApp
-
 </button>
-
 </a>
-
 </div>
 
 </section>
 
-
-
-<!-- ============================= -->
-<!-- SECCIÓN CONTACTO -->
-<!-- ============================= -->
+<!-- =============================
+     SECCIÓN CONTACTO
+============================= -->
 
 <section id="contacto">
 
 <h2>Contacto</h2>
 
-<!-- formulario simple de contacto -->
-
 <form onsubmit="alert('Mensaje enviado correctamente'); return false;">
-
 <label for="nombre">Nombre</label>
 <input type="text" id="nombre" required>
 
@@ -297,44 +227,38 @@ Contactar por WhatsApp
 <label for="mensaje">Mensaje</label>
 <textarea id="mensaje" required></textarea>
 
-<button type="submit">
-
-Enviar
-
-</button>
-
+<button type="submit">Enviar</button>
 </form>
 
 </section>
 
 </main>
 
-
-
-<!-- ============================= -->
-<!-- PIE DE PÁGINA -->
-<!-- ============================= -->
+<!-- =============================
+     PIE DE PÁGINA
+============================= -->
 
 <footer>
-
 <p>
-
 Proyecto Calculadora Ganadera  
 Sara Nikol Salgado Villada
-
 </p>
-
 </footer>
 
-
-
-<!-- ============================= -->
-<!-- ARCHIVO JAVASCRIPT -->
-<!-- ============================= -->
+<!-- =============================
+     JAVASCRIPT
+============================= -->
 
 <!-- conexión con tu archivo JS -->
-
 <script src="script.js"></script>
+
+<!-- Función para abrir el Glosario -->
+<script>
+function abrirGlosario() {
+    // abre una nueva pestaña con el glosario
+    window.open("glosario.html", "_blank");
+}
+</script>
 
 </body>
 </html>
